@@ -1,12 +1,37 @@
-from tkinter import Tk, Listbox, ttk, LabelFrame, Label, Entry
+from tkinter import Tk, Listbox, ttk, LabelFrame, Label, Entry, Checkbutton, BooleanVar, Button
 from locationList import locations
-from item import items
+from item import items, allitems
+
+combosWithItem = []
+combosForEntry = []
+entries = []
 
 def createComboBox(window, elements=[]):
     combo = ttk.Combobox(window)
     combo['values'] = list(elements)
     combo.current(0)
     return combo
+
+def addEntry(window, value):
+    elements = list(items) if value.get() else allitems
+    entry = Entry(window, width=20)
+    entry.grid(row=len(entries)+8, column=0)
+    comboBox = createComboBox(window, elements)
+    comboBox.grid(row=len(entries)+8, column=1)
+    combosWithItem.append(comboBox)
+    entries.append(entry)
+
+def removeEntry():
+    if len(entries) > 0:
+        entries[-1].destroy()
+        del entries[-1]
+        combosWithItem[-1].destroy()
+        del combosWithItem[-1]
+
+def removeUseless(value):
+    elements = list(items) if value.get() else allitems
+    for combo in combosWithItem:
+        combo['values'] = list(elements)
 
 def main():
     window = Tk()
@@ -34,20 +59,25 @@ def main():
     other = LabelFrame(window, text="Other", padx=20, pady=20)
     other.pack(fill="both", expand="yes")
 
-    Label(other, text="30 skulls").grid(row=0, column=0)
-    Label(other, text="40 skulls").grid(row=1, column=0)
-    Label(other, text="50 skulls").grid(row=2, column=0)
-    Label(other, text="Frogs").grid(row=3, column=0)
-    Label(other, text="Big poes").grid(row=4, column=0)
-    Label(other, text="Biggoron Sword").grid(row=5, column=0)
+    value = BooleanVar()
+    value.set(True)
+    check = Checkbutton(other, text="Remove useless item", variable=value, command=(lambda : removeUseless(value)))
+    check.grid(row=0, column=0)
 
-    for i in range(4):
-        Entry(other, width=30).grid(row=i+6, column=0)
+    Label(other, text="30 skulls").grid(row=1, column=0)
+    Label(other, text="40 skulls").grid(row=2, column=0)
+    Label(other, text="50 skulls").grid(row=3, column=0)
+    Label(other, text="Frogs").grid(row=4, column=0)
+    Label(other, text="Ocarina Of Time").grid(row=5, column=0)
+    Label(other, text="Biggoron Sword").grid(row=6, column=0)
 
-    for i in range(10):
-        createComboBox(other, elements=items).grid(row=i, column=1)
+    for i in range(6):
+        combo = createComboBox(other, elements=items)
+        combosWithItem.append(combo)
+        combo.grid(row=i+1, column=1)
     
-
+    Button(other, text="+", command=lambda: addEntry(other, value)).grid(row=7, column=0)
+    Button(other, text="-", command=removeEntry).grid(row=7, column=1)
     
     window.mainloop()
 
