@@ -29,6 +29,9 @@ locations = [
     "Fire Temple",
     "Shadow Temple",
     "Spirit Temple",
+    "Temple of Time",
     "Ice Cavern",
-    "Bottom of the Well"
+    "Bottom of the Well",
+    "Outside Ganon Castle",
+    "Gerudo Training Ground",
 ]
