@@ -108,7 +108,6 @@ allitems = [
 
 items = [
     '',
-    'Useless',
     'Magic Meter',
     'Slingshot',
     'Boomerang',
